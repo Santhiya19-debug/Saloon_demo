@@ -1,0 +1,246 @@
+/* ─────────────────────────────────────────────────
+   EXISTING BASE STYLES  (unchanged)
+───────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #161514;
+  color: #FAF7F2;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Custom glow utility for CTA button */
+.glow-btn {
+  position: relative;
+  box-shadow: 0 0 20px rgba(217, 83, 30, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-btn:hover {
+  box-shadow: 0 0 35px rgba(217, 83, 30, 0.7);
+  transform: translateY(-2px);
+}
+
+/* Subtle illuminated ring pulse effect */
+.glow-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(217,83,30,0.8));
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(4px);
+  transition: opacity 0.3s ease;
+}
+
+.glow-btn:hover::after {
+  opacity: 1;
+}
+
+/* Hide scrollbars for clean marquee */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+/* ─────────────────────────────────────────────────
+   BLK ORANGE — HOMEPAGE ADDITIONS
+   All selectors are namespaced with .blko- so they
+   cannot bleed into other pages.
+───────────────────────────────────────────────── */
+
+/* ── Hover states (can't set :hover inside inline styles) ── */
+
+.blko-nav-link:hover {
+  color: #D9531E !important;
+}
+
+.blko-header-cta:hover {
+  background-color: #B84214 !important;
+}
+
+.blko-hero-cta:hover {
+  background-color: #e8e2db !important;
+}
+
+.blko-hero-cta:hover span:last-child {
+  transform: translateX(4px);
+}
+
+
+/* ═══════════════════════════════════════════════════
+   TABLET  —  768px to 1023px
+   Layout collapses: left panel gets narrower,
+   right panel adjusts, headline stays visible.
+═══════════════════════════════════════════════════ */
+@media (max-width: 1023px) {
+
+  /* ── Header ── */
+  .blko-desktop-nav {
+    display: none !important;
+  }
+  .blko-hamburger {
+    display: flex !important;
+  }
+  .blko-mobile-drawer {
+    display: flex !important;
+  }
+
+  /* ── Hero — shrink side panels ── */
+  .blko-hero {
+    min-height: calc(100vh - 80px);
+  }
+
+  .blko-left-panel {
+    width: 24% !important;
+    padding: 32px 16px 32px 24px !important;
+  }
+
+  .blko-right-panel {
+    width: 24% !important;
+    padding: 32px 20px 32px 12px !important;
+  }
+
+  /* Tighten hero headline padding to match narrower panels */
+  .blko-hero-headline {
+    padding-left: 24% !important;
+    padding-right: 24% !important;
+  }
+
+  /* Reduce barcode at tablet */
+  .blko-deco {
+    display: none !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   MOBILE  —  up to 767px
+   Single-column layout:
+     1. Orange hero fills screen
+     2. Model visible (top-center, clipped to ~55vh)
+     3. Main headline overlaid at bottom
+     4. Right-panel content (headline + CTA) below
+        the hero in an orange-extended band
+═══════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+
+  /* ── Header ── */
+  header[style] {
+    padding: 0 20px !important;
+  }
+
+  /* ── Hero becomes a tall column ── */
+  .blko-hero {
+    min-height: 100svh !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Hide side panels entirely ── */
+  .blko-left-panel,
+  .blko-right-panel,
+  .blko-deco {
+    display: none !important;
+  }
+
+  /* ── Model: absolute, top-centered, clipped ── */
+  /* The model wrap stays absolute; restrict model width to 100% */
+  .blko-hero .blko-model-img-wrap {
+    justify-content: center !important;
+  }
+  .blko-hero img[alt="Salon model surrounded by beauty tools"] {
+    max-width: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    object-position: top center !important;
+  }
+
+  /* ── Headline: reposition for mobile ── */
+  .blko-hero-headline {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    bottom: 0 !important;
+    z-index: 30 !important;          /* sit on top of model for mobile */
+  }
+
+  .blko-hero-headline > div {
+    font-size: clamp(52px, 14vw, 90px) !important;
+    line-height: 0.86 !important;
+  }
+
+  /* ── Mobile hero content panel (below headline) ── */
+  /* We inject this via a separate div — see the mobile content block below */
+  .blko-mobile-content {
+    display: flex !important;
+  }
+}
+
+/* Hide mobile content block on desktop & tablet */
+.blko-mobile-content {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 36px 24px 48px;
+  background-color: #D9531E;
+  gap: 20px;
+}
+
+.blko-mobile-content__heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(34px, 9vw, 48px);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.blko-mobile-content__sub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  line-height: 2.1;
+  margin: 0;
+}
+
+.blko-mobile-content__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #FAF7F2;
+  color: #161514;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 14px 18px;
+  text-decoration: none;
+  min-width: 200px;
+}
+
+.blko-mobile-content__cta:hover {
+  background-color: #e8e2db;
+}
+
+
+/* ═══════════════════════════════════════════════════
+   VERY SMALL PHONES  —  up to 390px
+═══════════════════════════════════════════════════ */
+@media (max-width: 390px) {
+  .blko-hero-headline > div {
+    font-size: 44px !important;
+  }
+
+  .blko-mobile-content__heading {
+    font-size: 30px !important;
+  }
+}
